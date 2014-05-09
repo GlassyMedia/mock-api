@@ -1,8 +1,9 @@
 {
   "name": "mock-api",
   "version": "0.1.0",
-  "description": "Mock an api based on json schema",
-  "main": "mockAPI.js",
+  "description": "command line mocked RESTful server from provided JSON schemas",
+  "bin" : { "mock-api" : "./bin/mockAPI.js" },
+  "preferGlobal": true,
   "dependencies": {
     "chalk": "~0.4.0",
     "express": "~4.1.2",
@@ -13,6 +14,18 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Isaac Chansky <isaac@glassymedia.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GlassyMedia/mock-api.git"
+  },
+  "keywords": [
+    "mock",
+    "api",
+    "server",
+    "rest",
+    "restful"
+    ],
+  "homepage": "https://github.com/GlassyMedia/mock-api",
+  "license": "MIT"
 }
