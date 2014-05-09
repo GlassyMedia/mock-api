@@ -56,6 +56,7 @@ function makeAPI(config){
 
     if(verb==='get'){
       app.get(resource.resourcePath, function(req, res){
+        res.setHeader('Access-Control-Allow-Origin', '*');
         if(req.params.id){
           var data = dummyData[req.params.id];
           if(data){
@@ -70,6 +71,7 @@ function makeAPI(config){
     }
     if(verb==='post'){
       app.post(resource.resourcePath, function(req, res) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
         var fakedID = dummyData.length+1;
         res.setHeader('Location', resource.resourcePath+'/'+fakedID);
         req.body.id = fakedID;
@@ -79,6 +81,7 @@ function makeAPI(config){
     }
     if(verb==='put'){
       app.put(resource.resourcePath, function(req, res) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
         var fakedID = dummyData.length+1;
         res.setHeader('Location', resource.resourcePath+'/'+fakedID);
         req.body.id = fakedID;
@@ -88,6 +91,7 @@ function makeAPI(config){
     }
     if(verb==='delete'){
       app.del(resource.resourcePath+'/:id', function(req, res) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
         res.json({}, 204);
       });
     }
