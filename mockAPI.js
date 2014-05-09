@@ -7,32 +7,39 @@ var fs = require('fs');
 var chalk = require('chalk');
 var express = require('express');
 
+var generateJsonSchema = require('json-schema-random');
+
 var MOCK_CONFIG = {
   configFile: 'mock.json',
 };
 
 function onErr(err){
+  // Generic error handling
   console.log(chalk.red(err));
   return 1;
 }
 
 function readConfig(){
+  // Parse mock.json configuration file
   var mocks = JSON.parse(fs.readFileSync(MOCK_CONFIG.configFile, 'utf8'));
-
   eventEmitter.emit('parsedConfig', mocks);
+}
+
+function generateFromSchema (schemePath) {
+  var schema = fs.readFileSync(schemePath, 'utf8');
+  return generateJsonSchema(JSON.parse(schema));
 }
 
 function makeAPI(mocks){
   var app = express();
-  console.log(chalk.green('Createing resources:'));
+  console.log(chalk.green('Creating resources:'));
 
   mocks.forEach( function(mock){
-    if (mock.verb.toUpperCase() === 'GET'){
-      app.get(mock.resourcePath, function(req, res){
-        res.json(mock.dummyData);
-      });
-      console.log(chalk.green(mock.verb.toUpperCase()+' '+mock.resourcePath));
-    }
+    var dummyData = generateFromSchema(mock.schema);
+    app[mock.verb.toLowerCase()](mock.resourcePath, function(req, res){
+      res.json(dummyData);
+    });
+    console.log(chalk.green(mock.verb.toUpperCase()+' '+mock.resourcePath));
 
   });
 
