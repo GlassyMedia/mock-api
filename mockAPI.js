@@ -54,20 +54,39 @@ function makeAPI(config){
 
     if(verb==='get'){
       app.get(resource.resourcePath, function(req, res){
-        res.json(dummyData);
+        if(req.params.id){
+          var data = dummyData[req.params.id];
+          if(data){
+            res.json(data);
+          }else{
+            res.json({}, 404);
+          }
+        }else{
+          res.json(dummyData);
+        }
       });
     }
-
     if(verb==='post'){
       app.post(resource.resourcePath, function(req, res) {
+        var fakedID = dummyData.length+1;
+        res.setHeader('Location', resource.resourcePath+'/'+fakedID);
+        req.body.id = fakedID;
         // echo body
         res.json(req.body, 201);
       });
     }
     if(verb==='put'){
       app.put(resource.resourcePath, function(req, res) {
+        var fakedID = dummyData.length+1;
+        res.setHeader('Location', resource.resourcePath+'/'+fakedID);
+        req.body.id = fakedID;
         // echo body
-        res.json(req.body, 202);
+        res.json(req.body, 200);
+      });
+    }
+    if(verb==='delete'){
+      app.del(resource.resourcePath+'/:id', function(req, res) {
+        res.json({}, 204);
       });
     }
 

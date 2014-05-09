@@ -6,13 +6,23 @@
         "resourcePath": "/todos",
         "schema": "todos.json"
        },
+      {
+        "verb": "GET",
+        "resourcePath": "/todos/:id",
+        "schema": "todos.json"
+       },
        {
         "verb": "POST",
         "resourcePath": "/todos",
         "schema": "todos.json"
        },
-      {
+       {
         "verb": "PUT",
+        "resourcePath": "/todos",
+        "schema": "todos.json"
+       },
+       {
+        "verb": "DELETE",
         "resourcePath": "/todos",
         "schema": "todos.json"
        },
