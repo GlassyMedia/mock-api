@@ -1,5 +1,7 @@
 #!/usr/bin/env node
+
 'use strict';
+
 var events = require('events');
 var eventEmitter = new events.EventEmitter();
 
@@ -15,14 +17,14 @@ var MOCK_CONFIG = {
   configFile: 'mock.json',
 };
 
+function log(string, color){
+  console.log(color ? chalk[color](string) : string);
+}
+
 function onErr(err){
   // Generic error handling
   log(err, 'red');
   return 1;
-}
-
-function log(string, color){
-  console.log(color ? chalk[color](string) : string);
 }
 
 function readConfig(){
@@ -41,7 +43,7 @@ function generateFromSchema (schemaPath) {
 }
 
 function makeAPI(config){
-  var schemaRoot = config.schemasPath
+  var schemaRoot = config.schemasPath;
 
   var app = express();
   app.use(bodyParser());
