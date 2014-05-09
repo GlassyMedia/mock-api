@@ -31,7 +31,11 @@ function readConfig(){
 
 function generateFromSchema (schemaPath) {
   var schema = fs.readFileSync(schemaPath, 'utf8');
-  return generateJsonSchema(JSON.parse(schema));
+  var randNum = parseInt(Math.random()*20, 10);
+  return Array.apply(null, Array(randNum))
+    .map(function(){
+      return generateJsonSchema(JSON.parse(schema));
+    });
 }
 
 function makeAPI(config){
