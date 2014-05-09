@@ -5,7 +5,9 @@ var eventEmitter = new events.EventEmitter();
 
 var fs = require('fs');
 var chalk = require('chalk');
+
 var express = require('express');
+var bodyParser = require('body-parser');
 
 var generateJsonSchema = require('json-schema-random');
 
@@ -31,7 +33,7 @@ function readConfig(){
 
 function generateFromSchema (schemaPath) {
   var schema = fs.readFileSync(schemaPath, 'utf8');
-  var randNum = parseInt(Math.random()*20, 10);
+  var randNum = parseInt(Math.random()*20, 10)+2;
   return Array.apply(null, Array(randNum))
     .map(function(){
       return generateJsonSchema(JSON.parse(schema));
@@ -39,17 +41,35 @@ function generateFromSchema (schemaPath) {
 }
 
 function makeAPI(config){
-  var app = express();
   var schemaRoot = config.schemasPath
+
+  var app = express();
+  app.use(bodyParser());
+
   log('Creating resources:', 'green');
 
   config.resources.forEach( function(resource){
     var dummyData = generateFromSchema(schemaRoot+resource.schema);
     var verb = resource.verb.toLowerCase();
 
-    app[verb](resource.resourcePath, function(req, res){
-      res.json(dummyData);
-    });
+    if(verb==='get'){
+      app.get(resource.resourcePath, function(req, res){
+        res.json(dummyData);
+      });
+    }
+
+    if(verb==='post'){
+      app.post(resource.resourcePath, function(req, res) {
+        // echo body
+        res.json(req.body, 201);
+      });
+    }
+    if(verb==='put'){
+      app.put(resource.resourcePath, function(req, res) {
+        // echo body
+        res.json(req.body, 202);
+      });
+    }
 
     log(resource.verb.toUpperCase()+' '+resource.resourcePath, 'green');
 

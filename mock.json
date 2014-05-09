@@ -7,6 +7,16 @@
         "schema": "todos.json"
        },
        {
+        "verb": "POST",
+        "resourcePath": "/todos",
+        "schema": "todos.json"
+       },
+      {
+        "verb": "PUT",
+        "resourcePath": "/todos",
+        "schema": "todos.json"
+       },
+       {
         "verb": "GET",
         "resourcePath": "/people",
         "schema": "people.json"
