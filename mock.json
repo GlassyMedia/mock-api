@@ -1,0 +1,45 @@
+[
+  {
+    "verb": "GET",
+    "resourcePath": "/todos",
+    "schema": "todos.json",
+    "dummyData": [
+      {
+        "todo": "get milk",
+        "notes": "get 2%"
+      },
+      {
+        "todo": "do laundry",
+        "notes": "none, just do it."
+      }
+     ]
+   },
+   {
+    "verb": "GET",
+    "resourcePath": "/things",
+    "schema": "things.json",
+    "dummyData": [
+      {
+        "thing1": "stuff"
+      },
+      {
+        "thing2": "more stuff"
+      }
+     ]
+   },
+   {
+    "verb": "GET",
+    "resourcePath": "/people",
+    "schema": "people.json",
+    "dummyData": [
+      {
+        "firstName": "Paul",
+        "lastName": "Lam"
+      },
+      {
+        "firstName": "Isaac",
+        "lastName": "Chansky"
+      }
+     ]
+   }
+]
