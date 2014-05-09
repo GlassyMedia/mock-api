@@ -15,31 +15,39 @@ var MOCK_CONFIG = {
 
 function onErr(err){
   // Generic error handling
-  console.log(chalk.red(err));
+  log(err, 'red');
   return 1;
+}
+
+function log(string, color){
+  console.log(color ? chalk[color](string) : string);
 }
 
 function readConfig(){
   // Parse mock.json configuration file
-  var mocks = JSON.parse(fs.readFileSync(MOCK_CONFIG.configFile, 'utf8'));
-  eventEmitter.emit('parsedConfig', mocks);
+  var config = JSON.parse(fs.readFileSync(MOCK_CONFIG.configFile, 'utf8'));
+  eventEmitter.emit('parsedConfig', config);
 }
 
-function generateFromSchema (schemePath) {
-  var schema = fs.readFileSync(schemePath, 'utf8');
+function generateFromSchema (schemaPath) {
+  var schema = fs.readFileSync(schemaPath, 'utf8');
   return generateJsonSchema(JSON.parse(schema));
 }
 
-function makeAPI(mocks){
+function makeAPI(config){
   var app = express();
-  console.log(chalk.green('Creating resources:'));
+  var schemaRoot = config.schemasPath
+  log('Creating resources:', 'green');
 
-  mocks.forEach( function(mock){
-    var dummyData = generateFromSchema(mock.schema);
-    app[mock.verb.toLowerCase()](mock.resourcePath, function(req, res){
+  config.resources.forEach( function(resource){
+    var dummyData = generateFromSchema(schemaRoot+resource.schema);
+    var verb = resource.verb.toLowerCase();
+
+    app[verb](resource.resourcePath, function(req, res){
       res.json(dummyData);
     });
-    console.log(chalk.green(mock.verb.toUpperCase()+' '+mock.resourcePath));
+
+    log(resource.verb.toUpperCase()+' '+resource.resourcePath, 'green');
 
   });
 
@@ -47,7 +55,7 @@ function makeAPI(mocks){
 }
 
 function serveAPI(app){
-  console.log(chalk.blue('api created, listening on: ')+chalk.yellow('localhost:3000'));
+  log('api created, listening on: localhost:3000', 'green');
   app.listen(3000);
 }
 
