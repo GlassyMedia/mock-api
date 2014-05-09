@@ -2,7 +2,9 @@
 'use strict';
 var events = require('events');
 var eventEmitter = new events.EventEmitter();
+
 var fs = require('fs');
+var chalk = require('chalk');
 var express = require('express');
 
 var MOCK_CONFIG = {
@@ -10,7 +12,7 @@ var MOCK_CONFIG = {
 };
 
 function onErr(err){
-  console.log(err);
+  console.log(chalk.red(err));
   return 1;
 }
 
@@ -22,14 +24,14 @@ function readConfig(){
 
 function makeAPI(mocks){
   var app = express();
-  console.log('Createding resources:');
+  console.log(chalk.green('Createing resources:'));
 
   mocks.forEach( function(mock){
     if (mock.verb.toUpperCase() === 'GET'){
       app.get(mock.resourcePath, function(req, res){
         res.json(mock.dummyData);
       });
-      console.log(mock.verb.toUpperCase()+' '+mock.resourcePath);
+      console.log(chalk.green(mock.verb.toUpperCase()+' '+mock.resourcePath));
     }
 
   });
@@ -38,7 +40,7 @@ function makeAPI(mocks){
 }
 
 function serveAPI(app){
-  console.log('api created, listening on localhost:3000');
+  console.log(chalk.blue('api created, listening on: ')+chalk.yellow('localhost:3000'));
   app.listen(3000);
 }
 
